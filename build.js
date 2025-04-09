@@ -1,55 +1,44 @@
-import { rimraf } from "rimraf";
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
-import { build } from "esbuild";
-import { execSync } from "node:child_process";
+import esbuild from "esbuild";
+import { copyFileSync, mkdirSync, readdirSync, lstatSync } from "fs";
+import { join } from "path";
+import { fileURLToPath } from "url";
+import { publicPath } from "ultraviolet-static";
 
-// read version from package.json
-const pkg = JSON.parse(await readFile("package.json"));
-process.env.ULTRAVIOLET_VERSION = pkg.version;
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
-const isDevelopment = process.argv.includes("--dev");
+// Tạo thư mục dist nếu chưa có
+mkdirSync("dist", { recursive: true });
 
-await rimraf("dist");
-await mkdir("dist");
-
-// don't compile these files
-await copyFile("src/sw.js", "dist/sw.js");
-await copyFile("src/uv.config.js", "dist/uv.config.js");
-
-let builder = await build({
-	platform: "browser",
-	sourcemap: true,
-	minify: !isDevelopment,
-	entryPoints: {
-		"uv.bundle": "./src/rewrite/index.js",
-		"uv.client": "./src/client/index.js",
-		"uv.handler": "./src/uv.handler.js",
-		"uv.sw": "./src/uv.sw.js",
-	},
-	define: {
-		"process.env.ULTRAVIOLET_VERSION": JSON.stringify(
-			process.env.ULTRAVIOLET_VERSION
-		),
-		"process.env.ULTRAVIOLET_COMMIT_HASH": (() => {
-			try {
-				let hash = JSON.stringify(
-					execSync("git rev-parse --short HEAD", {
-						encoding: "utf-8",
-					}).replace(/\r?\n|\r/g, "")
-				);
-
-				return hash;
-			} catch (e) {
-				return "unknown";
-			}
-		})(),
-	},
-	bundle: true,
-	treeShaking: true,
-	metafile: isDevelopment,
-	logLevel: "info",
-	outdir: "dist/",
+// Build uv.client.js
+await esbuild.build({
+  entryPoints: ["uv.client.js"],
+  bundle: true,
+  outfile: "dist/uv.client.js",
+  minify: true,
 });
-if (isDevelopment) {
-	await writeFile("metafile.json", JSON.stringify(builder.metafile));
+
+// Build uv.bundle.js
+await esbuild.build({
+  entryPoints: ["uv.bundle.js"],
+  bundle: true,
+  outfile: "dist/uv.bundle.js",
+  minify: true,
+});
+
+// Sao chép index.html và các file public khác
+function copyRecursive(src, dest) {
+  const entries = readdirSync(src, { withFileTypes: true });
+  entries.forEach(entry => {
+    const srcPath = join(src, entry.name);
+    const destPath = join(dest, entry.name);
+    if (entry.isDirectory()) {
+      mkdirSync(destPath, { recursive: true });
+      copyRecursive(srcPath, destPath);
+    } else {
+      copyFileSync(srcPath, destPath);
+    }
+  });
 }
+
+copyRecursive(publicPath, "dist");
+console.log("✅ Build completed and public files copied!");
