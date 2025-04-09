@@ -2,7 +2,7 @@ import esbuild from "esbuild";
 import { copyFileSync, mkdirSync, readdirSync, lstatSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
-import { publicPath } from "ultraviolet-static";
+import { publicPath } from "Ultraviolet";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
 
