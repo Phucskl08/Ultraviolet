@@ -2,9 +2,9 @@ import esbuild from "esbuild";
 import { copyFileSync, mkdirSync, readdirSync, lstatSync } from "fs";
 import { join } from "path";
 import { fileURLToPath } from "url";
-import { publicPath } from "Ultraviolet";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const publicPath = "./public"; // Thay vì import từ ./Ultraviolet
 
 // Tạo thư mục dist nếu chưa có
 mkdirSync("dist", { recursive: true });
