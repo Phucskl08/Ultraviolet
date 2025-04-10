@@ -61,39 +61,40 @@
 
   <footer>Powered by Ultraviolet</footer>
 
+  <!-- Register service worker -->
+  <script>
+    navigator.serviceWorker.register("/uv.sw.js", { scope: "/service/" });
+  </script>
+
+  <!-- Load Ultraviolet scripts -->
   <script src="/uv.bundle.js"></script>
   <script src="/uv.client.js"></script>
+
+  <!-- Init UV and handle navigation -->
   <script>
-    window.addEventListener("load", () => {
-      window.__uv$config = {
-        prefix: "/service/",
-        encodeUrl: Ultraviolet.codec.xor.encode,
-        decodeUrl: Ultraviolet.codec.xor.decode,
-        handler: "/uv.handler.js",
-        client: "/uv.client.js",
-        bundle: "/uv.bundle.js",
-        config: "/uv.config.js",
-        sw: "/uv.sw.js",
-      };
+    window.__uv$config = {
+      prefix: "/service/",
+      encodeUrl: Ultraviolet.codec.xor.encode,
+      decodeUrl: Ultraviolet.codec.xor.decode,
+      handler: "/uv.handler.js",
+      client: "/uv.client.js",
+      bundle: "/uv.bundle.js",
+      config: "/uv.config.js",
+      sw: "/uv.sw.js",
+    };
 
-      const input = document.getElementById("url-input");
-      const go = () => {
-        let url = input.value.trim();
-        if (!url.startsWith("http")) url = "http://" + url;
+    const input = document.getElementById("url-input");
+    const go = () => {
+      let url = input.value.trim();
+      if (!url.startsWith("http")) url = "http://" + url;
+      location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+    };
 
-        navigator.serviceWorker
-          .register(__uv$config.sw, { scope: __uv$config.prefix })
-          .then(() => {
-            location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
-          });
-      };
-
-      document.querySelector("button").onclick = go;
-      input.addEventListener("keydown", function (e) {
-        if (e.key === "Enter") {
-          go();
-        }
-      });
+    document.querySelector("button").onclick = go;
+    input.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        go();
+      }
     });
   </script>
 </body>
