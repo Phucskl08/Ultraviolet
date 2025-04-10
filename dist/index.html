@@ -19,16 +19,23 @@
   <script src="uv.config.js" defer></script>
   <script>
     window.addEventListener("DOMContentLoaded", () => {
+      console.log("Loaded config:", window.__uv$config);
+
       const form = document.getElementById("uv-form");
       const input = document.getElementById("uv-address");
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         const url = input.value;
+        let finalUrl = "";
+
         if (!url.startsWith("http")) {
-          location.href = __uv$config.prefix + __uv$config.encodeUrl("https://" + url);
+          finalUrl = window.__uv$config.prefix + window.__uv$config.encodeUrl("https://" + url);
         } else {
-          location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+          finalUrl = window.__uv$config.prefix + window.__uv$config.encodeUrl(url);
         }
+
+        console.log("Redirecting to:", finalUrl);
+        location.href = finalUrl;
       });
     });
   </script>
