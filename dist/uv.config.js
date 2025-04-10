@@ -1,6 +1,6 @@
 /*global Ultraviolet*/
 self.__uv$config = {
-  prefix: "https://bare.share-proxy.ga/service/",
+  prefix: location.origin + "/service/",
   encodeUrl: Ultraviolet.codec.xor.encode,
   decodeUrl: Ultraviolet.codec.xor.decode,
   handler: "/uv.handler.js",
