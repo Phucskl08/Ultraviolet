@@ -1,1 +1,83 @@
-<!DOCTYPE html><html><head><title>Ultraviolet</title></head><body><h1>It works!</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultraviolet Proxy</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+    }
+
+    input {
+      padding: 0.5rem;
+      width: 300px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 1rem;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #1f1f1f;
+      color: white;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #333;
+    }
+
+    footer {
+      position: absolute;
+      bottom: 1rem;
+      font-size: 0.8rem;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ultraviolet Proxy</h1>
+  <input id="url-input" type="text" placeholder="Enter a URL..." />
+  <button onclick="go()">Go</button>
+
+  <footer>Powered by Ultraviolet</footer>
+
+  <script src="/uv.bundle.js"></script>
+  <script src="/uv.client.js"></script>
+  <script>
+    const form = document.getElementById('url-input');
+    const go = () => {
+      let url = form.value.trim();
+      if (!url.startsWith("http")) {
+        url = "http://" + url;
+      }
+      window.location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+    };
+
+    form.addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        go();
+      }
+    });
+  </script>
+</body>
+</html>
