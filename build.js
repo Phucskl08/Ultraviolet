@@ -15,7 +15,7 @@ await rimraf("dist");
 await mkdir("dist");
 
 // Copy các file không cần compile
-await copyFile("src/sw.js", "dist/sw.js");
+await copyFile("src/uv.sw.js", "dist/uv.sw.js");
 await copyFile("src/uv.config.js", "dist/uv.config.js");
 
 // Build các file bằng esbuild
