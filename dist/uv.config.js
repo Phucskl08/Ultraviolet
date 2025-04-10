@@ -1,6 +1,6 @@
 /*global Ultraviolet*/
 self.__uv$config = {
-  prefix: "/bare/", // không trỏ domain khác
+  prefix: "https://bare-server-node-ilehuycmw-phucs-projects-2a11ed2b.vercel.app/bare/", // không trỏ domain khác
   encodeUrl: Ultraviolet.codec.xor.encode,
   decodeUrl: Ultraviolet.codec.xor.decode,
   handler: "/uv.handler.js",
