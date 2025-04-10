@@ -1,1 +1,36 @@
-<!DOCTYPE html><html><head><title>Ultraviolet</title></head><body><h1>It works!</h1></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ultraviolet</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Ultraviolet Proxy</h1>
+    <form id="uv-form">
+      <input type="text" id="uv-address" placeholder="Enter a URL..." />
+      <button type="submit">Go</button>
+    </form>
+  </div>
+
+  <script src="uv.bundle.js" defer></script>
+  <script src="uv.config.js" defer></script>
+  <script>
+    window.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("uv-form");
+      const input = document.getElementById("uv-address");
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const url = input.value;
+        if (!url.startsWith("http")) {
+          location.href = __uv$config.prefix + __uv$config.encodeUrl("https://" + url);
+        } else {
+          location.href = __uv$config.prefix + __uv$config.encodeUrl(url);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
