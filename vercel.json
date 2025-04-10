@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/service/:match*", "destination": "/uv.handler.js" }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false
+}
