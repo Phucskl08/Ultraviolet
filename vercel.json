@@ -1,10 +1,14 @@
 {
-  "outputDirectory": "dist",
-  "rewrites": [
-    { "source": "/service-worker.js", "destination": "/uv.sw.js" },
-    { "source": "/uv/*", "destination": "/index.html" },
-    { "source": "/service/*", "destination": "/index.html" },
-    { "source": "/generate_204", "destination": "/index.html" },
-    { "source": "/cdn-cgi/*", "destination": "/index.html" }
-  ]
+    "builds": [
+      {
+        "src": "build.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/(.*)",
+        "dest": "/dist/$1"
+      }
+    ]
 }
