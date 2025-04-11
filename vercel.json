@@ -1,14 +1,11 @@
 {
-    "builds": [
-      {
-        "src": "build.js",
-        "use": "@vercel/node"
-      }
-    ],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/dist/$1"
-      }
-    ]
+  "rewrites": [
+    { "source": "/uv.config.js", "destination": "/dist/uv.config.js" },
+    { "source": "/uv.client.js", "destination": "/dist/uv.client.js" },
+    { "source": "/uv.bundle.js", "destination": "/dist/uv.bundle.js" },
+    { "source": "/uv.handler.js", "destination": "/dist/uv.handler.js" },
+    { "source": "/uv.sw.js", "destination": "/dist/uv.sw.js" },
+    { "source": "/index.html", "destination": "/dist/index.html" },
+    { "source": "/", "destination": "/dist/index.html" }
+  ]
 }
