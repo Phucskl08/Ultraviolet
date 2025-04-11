@@ -14,7 +14,7 @@
 		"uv.d.ts",
 		"client.d.ts"
 	],
-	"type": "module",
+	"type": "commonjs",
 	"scripts": {
 		"build": "node build.js",
 		"dev": "node build.js --dev",
